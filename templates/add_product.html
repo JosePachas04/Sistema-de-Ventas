@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Añadir Producto - TuAbarrote Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-form-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fff;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .admin-form-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .form-group input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .form-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-actions button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-actions button:hover {
+            background-color: #218838;
+        }
+        .form-actions a {
+            margin-left: 20px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-left">
+                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
+                <a href="#">Mi Cuenta</a>
+            </div>
+            <div class="top-bar-right">
+                 <span>Idioma: ES ⌄</span>
+                 <span>Moneda: USD ⌄</span>
+                 <a href="#">Seguimiento de Pedido</a>
+                 {% if is_logged_in %}
+                     <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                     {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
+                 {% if is_logged_in and user_role != 'admin' %}
+                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                 {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">TuAbarrote</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar productos, categorías o marcas...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
+                 {% if user_role == 'admin' %}
+                 <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
+                 {% endif %}
+                  <li><a href="#">Categorías Populares</a></li>
+                  <li><a href="#">Ofertas del Día</a></li>
+                 <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="admin-form-container">
+            <h2>Añadir Nuevo Producto</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div style="margin-bottom: 20px;">
+                    {% for category, message in messages %}
+                        <p class="message {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Nombre del Producto:</label>
+                    <input type="text" id="name" name="name" value="{{ name if name is defined }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <textarea id="description" name="description">{{ description if description is defined }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price">Precio:</label>
+                    <input type="number" id="price" name="price" step="0.01" min="0" value="{{ price if price is defined }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="stock">Stock:</label>
+                    <input type="number" id="stock" name="stock" min="0" value="{{ stock if stock is defined }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="category_id">Categoría:</label>
+                    <select id="category_id" name="category_id" required>
+                        <option value="">Selecciona una categoría</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if category_id is defined and category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="image">Imagen del Producto:</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="is_active" name="is_active" {% if is_active is defined and is_active %}checked{% endif %}>
+                    <label for="is_active">Producto Activo</label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">Guardar Producto</button>
+                    <a href="{{ url_for('products') }}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

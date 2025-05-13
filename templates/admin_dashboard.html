@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - TuAbarrote</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-dashboard-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fff;
+            text-align: center;
+        }
+        .admin-dashboard-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .admin-links {
+            margin-top: 20px;
+        }
+        .admin-links a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .admin-links a:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-left">
+                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
+                <a href="#">Mi Cuenta</a>
+            </div>
+            <div class="top-bar-right">
+                 <span>Idioma: ES ⌄</span>
+                 <span>Moneda: USD ⌄</span>
+                 <a href="#">Seguimiento de Pedido</a>
+                 {% if is_logged_in %}
+                     <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                     {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
+                 {% if is_logged_in and user_role != 'admin' %}
+                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                 {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">TuAbarrote</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar productos, categorías o marcas...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
+                 {% if user_role == 'admin' %}
+                 <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
+                 {% endif %}
+                  <li><a href="#">Categorías Populares</a></li>
+                  <li><a href="#">Ofertas del Día</a></li>
+                 <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="admin-dashboard-container">
+            <h2>Dashboard de Administrador</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div style="margin-bottom: 20px;">
+                    {% for category, message in messages %}
+                        <p class="message {{ category }}">{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <p>Bienvenido, {{ session.username }} (Rol: {{ user_role }})</p>
+
+            <div class="admin-links">
+                <a href="{{ url_for('products') }}">Gestionar Productos</a>
+                <a href="#">Gestionar Pedidos</a>
+                <a href="#">Gestionar Usuarios</a>
+            </div>
+
+             <div style="margin-top: 30px;">
+                 <p><a href="{{ url_for('logout') }}">Cerrar Sesión</a></p>
+             </div>
+        </div>
+    </div>
+
+</body>
+</html>

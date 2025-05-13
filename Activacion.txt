@@ -1,0 +1,9 @@
+- Activa el Entorno Virtual:
+
+.\venv\Scripts\Activate.ps1
+
+- Base MySql Conectado
+
+- Ejecuta la Aplicación Flask:
+
+python app.py

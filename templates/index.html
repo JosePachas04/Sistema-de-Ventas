@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a TuAbarrote</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-left">
+                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
+                <!-- <a href="#">Mi Cuenta</a> -->
+            </div>
+            <div class="top-bar-right">
+                 <!-- <span>Idioma: ES ⌄</span>
+                 <span>Moneda: USD ⌄</span>
+                 <a href="#">Seguimiento de Pedido</a> -->
+                 {% if is_logged_in %}
+                     <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                     {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
+                 {% if is_logged_in and user_role != 'admin' %}
+                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                 {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">TuAbarrote</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar productos, categorías o marcas...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Inicio</a></li>
+                <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
+                 {% if user_role == 'admin' %}
+                 <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
+                 {% endif %}
+                  <!-- <li><a href="#">Categorías Populares</a></li>
+                  <li><a href="#">Ofertas del Día</a></li> -->
+                 <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 20px;">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div style="margin-bottom: 20px;">
+                {% for category, message in messages %}
+                    <p class="message {{ category }}">{{ message }}</p>
+                {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+
+         {% if user_role != 'admin' %}
+             <div class="hero-banner">
+                 <div class="hero-banner-content">
+                     <h2>Obtenga productos <br>de la mejor calidad a <br>los mejores precios.</h2>
+                     <p>Hemos preparado descuentos especiales para ti. <br>No te pierdas estas oportunidades...</p>
+                     <a href="{{ url_for('products_for_customer') }}" class="btn-primary">Comprar ahora</a>
+                     <span style="font-size: 1.2em; margin-left: 20px; color: #555;">S/. 27.99 <span style="text-decoration: line-through; font-size: 0.9em;">S/. 56.67</span></span>
+                 </div>
+                 <img src="{{ url_for('static', filename='images/hero_banner_placeholder.jpg') }}" alt="Banner Promocional">
+             </div>
+         {% endif %}
+
+
+         {% if user_role != 'admin' %}
+            <h3 class="product-section-title">Recién Llegados</h3>
+              <div style="text-align: right; margin-bottom: 10px;">
+                 <a href="{{ url_for('products_for_customer') }}">Ver todo <i class="fas fa-arrow-right"></i></a>
+              </div>
+            <div class="product-list">
+                 <div class="product-item">
+                     <img src="{{ url_for('static', filename='images/no_image_placeholder.png') }}" alt="Producto Placeholder">
+                     <div class="rating">
+                         <span class="star">&#9733;</span>
+                         <span class="star">&#9733;</span>
+                         <span class="star">&#9733;</span>
+                         <span class="star" style="color: #ccc;">&#9734;</span>
+                         <span class="star" style="color: #ccc;">&#9734;</span>
+                         <span class="rating-count">(3)</span>
+                     </div>
+                     <h4>Nombre del Producto Placeholder</h4>
+                     <p class="price">S/. 15.50</p>
+                 </div>
+                 <div class="product-item">
+                     <img src="{{ url_for('static', filename='images/no_image_placeholder.png') }}" alt="Producto Placeholder">
+                     <div class="rating">
+                         <span class="star">&#9733;</span>
+                         <span class="star">&#9733;</span>
+                         <span class="star">&#9733;</span>
+                         <span class="star">&#9733;</span>
+                         <span class="star" style="color: #ccc;">&#9734;</span>
+                         <span class="star" style="color: #ccc;">&#9734;</span>
+                         <span class="rating-count">(4)</span>
+                     </div>
+                     <h4>Otro Producto Placeholder</h4>
+                     <p class="price">S/. 25.00 <span class="original-price">S/. 30.00</span></p>
+                 </div>
+            </div>
+         {% endif %}
+
+
+         {% if user_role != 'admin' %}
+             <div class="promo-banners" style="margin-top: 30px; display: flex; gap: 20px;">
+                 <div class="banner" style="flex: 1; background-color: #ffeeba; padding: 20px; border-radius: 8px; text-align: center;">
+                     <h4>¡Ofertas de la Semana!</h4>
+                     <p>Descuentos increíbles en productos seleccionados.</p>
+                 </div>
+                 <div class="banner" style="flex: 1; background-color: #d1ecf1; padding: 20px; border-radius: 8px; text-align: center;">
+                     <h4>Envío Gratis</h4>
+                     <p>En compras mayores a S/. 100.</p>
+                 </div>
+             </div>
+         {% endif %}
+
+
+    </div>
+
+     <div class="container" style="margin-top: 20px; text-align: center;">
+         {% if user_role == 'admin' %}
+             <p><a href="{{ url_for('admin_dashboard') }}">Volver al Dashboard Admin</a></p>
+         {% elif is_logged_in %}
+              <p><a href="{{ url_for('logout') }}">Cerrar Sesión</a></p>
+         {% else %}
+             <p><a href="{{ url_for('index') }}">Volver al Inicio</a></p>
+         {% endif %}
+     </div>
+     
+</body>
+</html>
