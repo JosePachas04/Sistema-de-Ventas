@@ -3,18 +3,21 @@ import mysql.connector
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os
+from dotenv import load_dotenv
 import re
+
+load_dotenv()
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'una_clave_secreta_muy_larga_y_aleatoria_para_tu_abarrote'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 DB_CONFIG = {
-    'host': 'centerbeam.proxy.rlwy.net',
-    'user': 'root',
-    'password': 'dEDYrDVaPjBlVKcrojfBklrRsKkbIwjE', # Reemplaza con tu contraseña si es diferente
-    'database': 'railway',
-    'port': 32539
+    'host': os.getenv('HOST'),
+    'user': os.getenv('USER'),
+    'password': os.getenv('PASSWORD'), # Reemplaza con tu contraseña si es diferente
+    'database': os.getenv('DATABASE'),
+    'port': int(os.getenv('PORT'))
 }
 
 UPLOAD_FOLDER = os.path.join('static', 'uploads', 'products')
