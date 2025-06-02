@@ -10,10 +10,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'una_clave_secreta_muy_larga_y_aleatoria_para_tu_abarrote'
 
 DB_CONFIG = {
-    'host': 'localhost',
+    'host': 'centerbeam.proxy.rlwy.net',
     'user': 'root',
-    'password': '72624803', # Reemplaza con tu contraseña si es diferente
-    'database': 'tuabarrotedb'
+    'password': 'dEDYrDVaPjBlVKcrojfBklrRsKkbIwjE', # Reemplaza con tu contraseña si es diferente
+    'database': 'railway',
+    'port': 32539
 }
 
 UPLOAD_FOLDER = os.path.join('static', 'uploads', 'products')
@@ -47,12 +48,7 @@ def is_customer():
 
 @app.route('/')
 def index():
-    if is_logged_in():
-        if is_admin():
-            return redirect(url_for('admin_dashboard'))
-        else:
-            return redirect(url_for('products_for_customer')) # Esta es la línea 52/53
-    return render_template('index.html', user_role=get_user_role(), is_logged_in=is_logged_in())
+    return redirect(url_for('products_for_customer'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -239,8 +235,9 @@ def products_for_customer(category_id):
         flash("Error al cargar productos.", "danger")
     finally:
         if cursor: cursor.close()
-        if conn and conn.is_connected(): conn.close()
-    return render_template('products.html', products=products_list, categories=categories_list, 
+        if conn and conn.is_connected(): conn.close() 
+        
+    return render_template('products.html', products=products_list, categories=categories_list,
                            user_role=get_user_role(), is_logged_in=is_logged_in(), 
                            selected_category=selected_category_name)
 
