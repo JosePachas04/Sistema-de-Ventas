@@ -4,169 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito de Compras - TuAbarrote</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .cart-items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .cart-item-unit-measure {
+            font-size: 0.8em;
+            color: #777;
+            display: block; 
+            margin-top: 3px;
         }
-        .cart-items-table th,
-        .cart-items-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-            vertical-align: middle;
-        }
-        .cart-items-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        .cart-item-image img {
-            max-width: 80px;
-            height: auto;
-            border-radius: 4px;
-        }
-        .cart-item-details h4 {
-            margin: 0 0 5px 0;
-            font-size: 1.1em;
-            color: #333;
-        }
-        .cart-item-details p {
-            margin: 0;
-            font-size: 0.9em;
-            color: #555;
-        }
-         .cart-item-quantity input[type="number"] {
-             width: 60px;
-             padding: 5px;
-             border: 1px solid #ccc;
-             border-radius: 4px;
-             text-align: center;
-         }
-         .cart-item-actions form {
-             display: inline-block;
-             margin-left: 10px;
-         }
-         .cart-item-actions button {
-             background: none;
-             border: none;
-             color: #dc3545;
-             cursor: pointer;
-             padding: 0;
-             font-size: 1.1em;
-         }
-          .cart-item-actions button:hover {
-              color: #c82333;
-          }
-
-        .cart-summary {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            background-color: #fff;
-            max-width: 300px;
-            margin-left: auto;
-        }
-         .cart-summary h3 {
-             margin-top: 0;
-             border-bottom: 1px solid #eee;
-             padding-bottom: 10px;
-             margin-bottom: 10px;
-         }
-         .cart-summary p {
-             font-size: 1.2em;
-             font-weight: bold;
-             color: #333;
-         }
-         .cart-summary .total-price {
-             color: #ff6600;
-             font-size: 1.5em;
-         }
-         .cart-summary .checkout-button {
-             display: block;
-             width: 100%;
-             background-color: #28a745;
-             color: white;
-             padding: 10px;
-             border: none;
-             border-radius: 25px;
-             text-align: center;
-             font-size: 1.2em;
-             margin-top: 20px;
-             transition: background-color 0.3s ease;
-         }
-         .cart-summary .checkout-button:hover {
-             background-color: #218838;
-             text-decoration: none;
-         }
-
-         .empty-cart-message {
-             text-align: center;
-             margin-top: 50px;
-             font-size: 1.2em;
-             color: #555;
-         }
-
-         @media (max-width: 600px) {
-             .cart-items-table th, .cart-items-table td {
-                 padding: 8px;
-                 font-size: 0.9em;
-             }
-             .cart-item-image img {
-                 max-width: 50px;
-             }
-             .cart-item-details h4 {
-                 font-size: 1em;
-             }
-              .cart-item-quantity input[type="number"] {
-                  width: 40px;
-              }
-              .cart-summary {
-                  max-width: 100%;
-                  margin-left: 0;
-              }
-         }
-
     </style>
 </head>
 <body>
-
-    <div class="top-bar">
-        <div class="container top-bar-content">
-            <div class="top-bar-left">
-                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
-                <a href="#">Mi Cuenta</a>
-            </div>
-            <div class="top-bar-right">
-                 <span>Idioma: ES ⌄</span>
-                 <span>Moneda: USD ⌄</span>
-                 <a href="#">Seguimiento de Pedido</a>
-                 {% if is_logged_in %}
-                     <span>Hola, {{ session.username }}</span> |
-                    {% if user_role == 'admin' %}
-                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
-                     {% endif %}
-                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
-                {% else %}
-                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
-                    <a href="{{ url_for('register') }}">Registrarse</a>
-                {% endif %}
-                 {% if is_logged_in and user_role != 'admin' %}
-                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
 
     <header>
         <div class="container header-content">
             <div class="logo">TuAbarrote</div>
             <div class="search-bar">
-                <input type="text" placeholder="Buscar productos, categorías o marcas...">
-                <button><i class="fas fa-search"></i></button>
+                <form action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="user-auth-links" style="margin-left: 20px;">
+                {% if is_logged_in %}
+                    <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                        <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                    {% if user_role != 'admin' %}
+                        <a href="{{ url_for('view_cart') }}" class="cart-icon-top" style="margin-left: 10px;">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -174,13 +50,10 @@
     <nav class="main-nav">
         <div class="container">
             <ul>
-                <li><a href="{{ url_for('index') }}">Inicio</a></li>
                 <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
                  {% if user_role == 'admin' %}
                  <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
                  {% endif %}
-                  <li><a href="#">Categorías Populares</a></li>
-                  <li><a href="#">Ofertas del Día</a></li>
                  <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
             </ul>
         </div>
@@ -228,6 +101,9 @@
                                 {% endif %}
                                 <div class="cart-item-details">
                                     <h4>{{ item.product.name }}</h4>
+                                    {% if item.product.unidad_medida %}
+                                        <span class="cart-item-unit-measure">Unidad: {{ item.product.unidad_medida }}</span>
+                                    {% endif %}
                                 </div>
                             </div>
                         </td>
@@ -253,8 +129,7 @@
                 <h3>Resumen del Pedido</h3>
                 <p>Subtotal: S/.{{ "%.2f" | format(total_price) }}</p>
                 <p class="total-price">Total: S/.{{ "%.2f" | format(total_price) }}</p>
-
-                 <form action="{{ url_for('checkout') }}" method="POST">
+                <form action="{{ url_for('checkout') }}" method="GET">
                     <button type="submit" class="checkout-button">Finalizar Compra</button>
                  </form>
             </div>
@@ -262,11 +137,9 @@
         {% else %}
             <p class="empty-cart-message">Tu carrito de compras está vacío.</p>
             <div style="text-align: center; margin-top: 20px;">
-                 <a href="{{ url_for('products_for_customer') }}" class="btn-primary">Volver a la Tienda</a>
+                 <a href="{{ url_for('products_for_customer') }}" class="btn-primary" style="padding: 10px 20px; background-color: #007bff; color: white; border-radius: 5px; text-decoration: none;">Volver a la Tienda</a>
             </div>
         {% endif %}
-
     </div>
-
 </body>
 </html>

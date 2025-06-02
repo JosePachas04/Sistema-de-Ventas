@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Añadir Producto - TuAbarrote Admin</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .admin-form-container {
@@ -74,39 +78,29 @@
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="container top-bar-content">
-            <div class="top-bar-left">
-                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
-                <a href="#">Mi Cuenta</a>
-            </div>
-            <div class="top-bar-right">
-                 <span>Idioma: ES ⌄</span>
-                 <span>Moneda: USD ⌄</span>
-                 <a href="#">Seguimiento de Pedido</a>
-                 {% if is_logged_in %}
-                     <span>Hola, {{ session.username }}</span> |
-                    {% if user_role == 'admin' %}
-                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
-                     {% endif %}
-                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
-                {% else %}
-                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
-                    <a href="{{ url_for('register') }}">Registrarse</a>
-                {% endif %}
-                 {% if is_logged_in and user_role != 'admin' %}
-                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
-
     <header>
         <div class="container header-content">
             <div class="logo">TuAbarrote</div>
             <div class="search-bar">
-                <input type="text" placeholder="Buscar productos, categorías o marcas...">
-                <button><i class="fas fa-search"></i></button>
+                <form action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="user-auth-links" style="margin-left: 20px;">
+                {% if is_logged_in %}
+                    <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                        <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                    {% if user_role != 'admin' %}
+                        <a href="{{ url_for('view_cart') }}" class="cart-icon-top" style="margin-left: 10px;">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -133,8 +127,8 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <div style="margin-bottom: 20px;">
-                    {% for category, message in messages %}
-                        <p class="message {{ category }}">{{ message }}</p>
+                    {% for category_name, message in messages %}
+                        <p class="message {{ category_name }}">{{ message }}</p>
                     {% endfor %}
                     </div>
                 {% endif %}
@@ -147,26 +141,30 @@
             <form method="POST" action="{{ url_for('add_product') }}" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Nombre del Producto:</label>
-                    <input type="text" id="name" name="name" value="{{ name if name is defined }}" required>
+                    <input type="text" id="name" name="name" value="{{ name if name is defined else '' }}" required>
                 </div>
                 <div class="form-group">
                     <label for="description">Descripción:</label>
-                    <textarea id="description" name="description">{{ description if description is defined }}</textarea>
+                    <textarea id="description" name="description">{{ description if description is defined else '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="price">Precio:</label>
-                    <input type="number" id="price" name="price" step="0.01" min="0" value="{{ price if price is defined }}" required>
+                    <input type="number" id="price" name="price" step="0.01" min="0" value="{{ price if price is defined else '' }}" required>
                 </div>
                 <div class="form-group">
                     <label for="stock">Stock:</label>
-                    <input type="number" id="stock" name="stock" min="0" value="{{ stock if stock is defined }}" required>
+                    <input type="number" id="stock" name="stock" min="0" value="{{ stock if stock is defined else 0 }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="unidad_medida">Unidad de Medida (ej: kg, lt, unidad, pqt):</label>
+                    <input type="text" id="unidad_medida" name="unidad_medida" value="{{ unidad_medida if unidad_medida is defined else '' }}" placeholder="Ej: kg, unidad, 500g, Litro">
                 </div>
                 <div class="form-group">
                     <label for="category_id">Categoría:</label>
                     <select id="category_id" name="category_id" required>
                         <option value="">Selecciona una categoría</option>
-                        {% for category in categories %}
-                            <option value="{{ category.id }}" {% if category_id is defined and category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                        {% for category_item in categories %}
+                            <option value="{{ category_item.id }}" {% if category_id is defined and category_id|string == category_item.id|string %}selected{% endif %}>{{ category_item.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -175,7 +173,7 @@
                     <input type="file" id="image" name="image" accept="image/*">
                 </div>
                 <div class="form-group">
-                    <input type="checkbox" id="is_active" name="is_active" {% if is_active is defined and is_active %}checked{% endif %}>
+                    <input type="checkbox" id="is_active" name="is_active" {% if is_active is defined and is_active %}checked{% elif not is_active is defined %}checked{% endif %}>
                     <label for="is_active">Producto Activo</label>
                 </div>
                 <div class="form-actions">

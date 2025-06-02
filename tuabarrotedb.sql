@@ -172,4 +172,15 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-13 16:57:44
+USE tuabarrotedb; -- Asegúrate de usar tu base de datos
+
+USE tuabarrotedb;
+
+-- Intento 2: Añadir solo la columna (sin restricciones)
+ALTER TABLE `users`
+ADD COLUMN `email` VARCHAR(100);
+
+USE tuabarrotedb;
+
+ALTER TABLE products
+ADD COLUMN unidad_medida VARCHAR(50) DEFAULT NULL;

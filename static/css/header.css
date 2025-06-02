@@ -1,0 +1,98 @@
+.top-bar {
+    background-color: #f2f2f2;
+    padding: 8px 0;
+    font-size: 0.9em;
+    color: #555;
+}
+.top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.top-bar-left a, .top-bar-right a {
+    margin-right: 15px;
+    color: #555;
+}
+.top-bar-right .cart-icon-top {
+    margin-left: 15px;
+    font-size: 1.1em;
+    cursor: pointer;
+    color: #ff6600;
+    font-weight: bold;
+}
+.top-bar-right .cart-icon-top .cart-count {
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+header {
+    background-color: #fff;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff6600;
+    margin-right: 30px;
+}
+.search-bar {
+    flex-grow: 1;
+    margin: 10px 20px;
+    display: flex;
+    max-width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    overflow: hidden;
+}
+.search-bar form { /* Asegurar que el formulario dentro del search-bar ocupe todo el espacio */
+    display: flex;
+    width: 100%;
+}
+.search-bar input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    border-radius: 25px 0 0 25px; /* Redondear solo el lado izquierdo del input */
+}
+.search-bar button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 0 25px 25px 0; /* Redondear solo el lado derecho del botón */
+    flex-shrink: 0; /* Evitar que el botón se encoja */
+}
+.search-bar button:hover {
+    background-color: #0056b3;
+}
+
+.user-auth-links a {
+     margin-left: 15px;
+     color: #333;
+     font-weight: bold;
+}
+
+@media (max-width: 992px) {
+     .header-content {
+        flex-direction: column;
+        text-align: center;
+     }
+      .logo { margin-right: 0; margin-bottom: 10px;}
+      .search-bar { margin: 10px auto; width: 90%; max-width: 400px;}
+      .user-links { margin: 10px auto;}
+      .user-auth-links a { margin: 0 5px;}
+      .top-bar-content { flex-direction: column; }
+      .top-bar-left, .top-bar-right { margin-bottom: 5px;}
+}

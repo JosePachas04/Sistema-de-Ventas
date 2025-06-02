@@ -4,103 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmación de Pedido - TuAbarrote</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/confirmation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .confirmation-container {
-            margin-top: 50px;
-            padding: 30px;
-            border: 1px solid #d4edda;
-            border-radius: 8px;
-            background-color: #e9f7ef;
-            text-align: center;
-            color: #155724;
+        /* ... (tus estilos existentes de confirmation.css y los inline) ... */
+         .order-item-unit-measure {
+            font-size: 0.8em;
+            color: #777;
+            display: block;
+            margin-top: 3px;
         }
-        .confirmation-container h2 {
-            color: #28a745;
-            margin-bottom: 20px;
-        }
-        .confirmation-container p {
-            font-size: 1.1em;
-            margin-bottom: 15px;
-        }
-         .order-details-summary {
-             margin-top: 30px;
-             padding: 20px;
-             border: 1px solid #ccc;
-             border-radius: 8px;
-             background-color: #fff;
-             text-align: left;
-             color: #333;
-         }
-         .order-details-summary h3 {
-             margin-top: 0;
-             border-bottom: 1px solid #eee;
-             padding-bottom: 10px;
-             margin-bottom: 10px;
-         }
-         .order-details-summary p {
-             margin-bottom: 8px;
-         }
-         .order-details-summary ul {
-             list-style: none;
-             padding: 0;
-             margin: 15px 0;
-         }
-         .order-details-summary li {
-             border-bottom: 1px dashed #eee;
-             padding: 10px 0;
-         }
-         .order-details-summary li:last-child {
-             border-bottom: none;
-         }
-         .order-details-summary .item-info {
-             display: flex;
-             align-items: center;
-             flex-wrap: wrap;
-         }
-         .order-details-summary .item-image img {
-             max-width: 50px;
-             height: auto;
-             margin-right: 15px;
-             border-radius: 4px;
-             flex-shrink: 0;
-         }
-         .order-details-summary .item-details {
-             flex-grow: 1;
-             min-width: 150px;
-         }
-         .order-details-summary .item-details h4 {
-             margin: 0;
-             font-size: 1em;
-         }
-         .order-details-summary .item-details p {
-             margin: 0;
-             font-size: 0.9em;
-             color: #555;
-         }
-         .order-details-summary .item-quantity-price {
-             text-align: right;
-             font-weight: bold;
-             flex-shrink: 0;
-             margin-left: 10px;
-         }
-
-
-        .back-to-home {
-            margin-top: 30px;
-            text-align: center;
-        }
-         .back-to-home a {
-             font-size: 1.1em;
-             color: #007bff;
-         }
-
-
     </style>
 </head>
 <body>
-
     <div class="top-bar">
         <div class="container top-bar-content">
             <div class="top-bar-left">
@@ -132,8 +52,10 @@
         <div class="container header-content">
             <div class="logo">TuAbarrote</div>
             <div class="search-bar">
-                <input type="text" placeholder="Buscar productos, categorías o marcas...">
-                <button><i class="fas fa-search"></i></button>
+                <form action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
             </div>
         </div>
     </header>
@@ -141,39 +63,40 @@
     <nav class="main-nav">
         <div class="container">
             <ul>
-                <li><a href="{{ url_for('index') }}">Inicio</a></li>
                 <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
                  {% if user_role == 'admin' %}
                  <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
                  {% endif %}
-                  <li><a href="#">Categorías Populares</a></li>
-                  <li><a href="#">Ofertas del Día</a></li>
                  <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
             </ul>
         </div>
     </nav>
 
-
     <div class="container">
         <div class="confirmation-container">
             <h2>¡Gracias por tu compra!</h2>
-            <p>Tu pedido ha sido procesado con éxito.</p>
+            {% if order %}
+                <p>Tu pedido <strong>#{{ order.id }}</strong> ha sido procesado con éxito.</p>
+            {% else %}
+                <p>Tu pedido ha sido procesado con éxito.</p>
+            {% endif %}
+
 
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <div style="margin-bottom: 20px;">
                     {% for category, message in messages %}
-                        <p class="message {{ category }}">{{ message }}</p>
+                         <p class="message {{ category }}">{{ message }}</p>
                     {% endfor %}
                     </div>
                 {% endif %}
             {% endwith %}
 
             {% if order %}
-                <div class="order-details-summary">
+                <div class="order_details_summary">
                     <h3>Detalles del Pedido</h3>
                     <p><strong>Número de Pedido:</strong> {{ order.id }}</p>
-                    <p><strong>Fecha del Pedido:</strong> {{ order.order_date.strftime('%Y-%m-%d %H:%m') if order.order_date else 'N/A' }}</p>
+                    <p><strong>Fecha del Pedido:</strong> {{ order.order_date.strftime('%d/%m/%Y %H:%M') if order.order_date else 'N/A' }}</p>
                     <p><strong>Estado:</strong> {{ order.status }}</p>
                     <p><strong>Total:</strong> S/.{{ "%.2f" | format(order.total_amount) }}</p>
 
@@ -182,18 +105,20 @@
                         <ul>
                             {% for item in order_items %}
                                 <li>
-                                     <div class="item-info">
+                                     <div class="item_info">
                                          {% if item.image_filename %}
-                                             <div class="item-image">
+                                             <div class="item_image">
                                                  <img src="{{ url_for('static', filename='uploads/products/' + item.image_filename) }}" alt="{{ item.name }}">
                                              </div>
                                          {% else %}
-                                              <div class="item-image">
+                                              <div class="item_image">
                                                  <img src="{{ url_for('static', filename='images/no_image_placeholder.png') }}" alt="Sin imagen disponible">
                                              </div>
                                          {% endif %}
-                                         <div class="item-details">
+                                         <div class="item_details">
                                              <h4>{{ item.name }}</h4>
+                                             {% if item.unidad_medida %} <span class="order-item-unit-measure">Unidad: {{ item.unidad_medida }}</span>
+                                             {% endif %}
                                              <p>Cantidad: {{ item.quantity }} | Precio Unitario: S/.{{ "%.2f" | format(item.price_at_purchase) }}</p>
                                          </div>
                                      </div>
@@ -203,8 +128,9 @@
                     {% else %}
                          <p>No se encontraron items para este pedido.</p>
                     {% endif %}
-
                 </div>
+            {% elif error %}
+                 <p class="message danger">{{ error }}</p>
             {% else %}
                  <p>No se pudieron cargar los detalles de tu pedido.</p>
             {% endif %}
@@ -212,9 +138,7 @@
             <div class="back-to-home">
                 <p><a href="{{ url_for('index') }}">Volver a la página principal</a></p>
             </div>
-
         </div>
     </div>
-
 </body>
 </html>

@@ -1,0 +1,109 @@
+.confirmation-container {
+    margin-top: 50px;
+    padding: 30px;
+    border: 1px solid #d4edda;
+    border-radius: 8px;
+    background-color: #e9f7ef;
+    text-align: center;
+    color: #155724;
+}
+.confirmation-container h2 {
+    color: #28a745;
+    margin-bottom: 20px;
+}
+.confirmation-container p {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+ .order_details_summary {
+     margin-top: 30px;
+     padding: 20px;
+     border: 1px solid #ccc;
+     border-radius: 8px;
+     background-color: #fff;
+     text-align: left;
+     color: #333;
+ }
+ .order_details_summary h3 {
+     margin-top: 0;
+     border-bottom: 1px solid #eee;
+     padding-bottom: 10px;
+     margin-bottom: 10px;
+     }
+ .order_details_summary p {
+     margin-bottom: 8px;
+ }
+ .order_details_summary ul {
+     list-style: none;
+     padding: 0;
+     margin: 15px 0;
+ }
+ .order_details_summary li {
+     border-bottom: 1px dashed #eee;
+     padding: 10px 0;
+ }
+ .order_details_summary li:last-child {
+     border-bottom: none;
+ }
+ .order_details_summary .item_info {
+     display: flex;
+     align-items: center;
+     flex-wrap: wrap;
+ }
+ .order_details_summary .item_image img {
+     max-width: 50px;
+     height: auto;
+     margin-right: 15px;
+     border-radius: 4px;
+     flex-shrink: 0;
+ }
+ .order_details_summary .item_details {
+     flex-grow: 1;
+     min-width: 150px;
+ }
+ .order_details_summary .item_details h4 {
+     margin: 0;
+     font-size: 1em;
+ }
+ .order_details_summary .item_details p {
+     margin: 0;
+     font-size: 0.8em;
+     color: #555;
+ }
+ .order_details_summary .item_quantity_price {
+     text-align: right;
+     font-weight: bold;
+     flex-shrink: 0;
+     margin-left: 10px;
+ }
+
+
+.back-to-home {
+    margin-top: 30px;
+    text-align: center;
+}
+ .back-to-home a {
+     font-size: 1.1em;
+     color: #007bff;
+ }
+
+@media (max-width: 992px) {
+       .confirmation-container {
+           padding: 15px;
+       }
+       .confirmation-container h2 {
+           font-size: 1.5em;
+       }
+        .order_details_summary h3 {
+            font-size: 1.1em;
+        }
+        .order_details_summary .item_image img {
+            max-width: 40px;
+        }
+        .order_details_summary .item_details h4 {
+             font-size: 0.9em;
+        }
+        .order_details_summary .item_details p {
+             font-size: 0.8em;
+        }
+}

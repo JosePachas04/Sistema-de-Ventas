@@ -4,101 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nosotros - TuAbarrote</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nosotros.css') }}">
+    {# <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}"> No parece necesario aquí #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .nosotros-container {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            background-color: #fff;
-        }
-        .nosotros-container h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #ff6600;
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-        .nosotros-container section {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-         .nosotros-container section:last-child {
-             border-bottom: none;
-         }
-
-        .nosotros-container h3 {
-            color: #ff6600;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.5em;
-        }
-        .nosotros-container p,
-        .nosotros-container address {
-            color: #555;
-            line-height: 1.8;
-        }
-        .nosotros-container address strong {
-            color: #333;
-        }
-
-        .contact-info {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0;
-        }
-        .contact-info li {
-            margin-bottom: 10px;
-            font-size: 1.1em;
-            color: #555;
-        }
-        .contact-info li i {
-            margin-right: 10px;
-            color: #007bff;
-        }
-
-
-    </style>
 </head>
 <body>
-
-    <div class="top-bar">
-        <div class="container top-bar-content">
-            <div class="top-bar-left">
-                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
-                <a href="#">Mi Cuenta</a>
-            </div>
-            <div class="top-bar-right">
-                 <span>Idioma: ES ⌄</span>
-                 <span>Moneda: USD ⌄</span>
-                 <a href="#">Seguimiento de Pedido</a>
-                 {% if is_logged_in %}
-                     <span>Hola, {{ session.username }}</span> |
-                    {% if user_role == 'admin' %}
-                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
-                     {% endif %}
-                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
-                {% else %}
-                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
-                    <a href="{{ url_for('register') }}">Registrarse</a>
-                {% endif %}
-                 {% if is_logged_in and user_role != 'admin' %}
-                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
 
     <header>
         <div class="container header-content">
             <div class="logo">TuAbarrote</div>
             <div class="search-bar">
-                <input type="text" placeholder="Buscar productos, categorías o marcas...">
-                <button><i class="fas fa-search"></i></button>
+                <form action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="user-auth-links" style="margin-left: 20px;">
+                {% if is_logged_in %}
+                    <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                        <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                    {% if user_role != 'admin' %}
+                        <a href="{{ url_for('view_cart') }}" class="cart-icon-top" style="margin-left: 10px;">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -106,13 +43,10 @@
     <nav class="main-nav">
         <div class="container">
             <ul>
-                <li><a href="{{ url_for('index') }}">Inicio</a></li>
                 <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
                  {% if user_role == 'admin' %}
                  <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
                  {% endif %}
-                  <li><a href="#">Categorías Populares</a></li>
-                  <li><a href="#">Ofertas del Día</a></li>
                  <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
             </ul>
         </div>
@@ -146,16 +80,13 @@
 
             <section>
                 <h3>Datos de Contacto</h3>
-                <address class="contact-info">
-                    <li><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong>Av. 22 de Diciembre #157</li>
-                    <li><i class="fas fa-phone"></i> <strong>Teléfono:</strong>+51 995 534 708</li>
-                    <li><i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:[tu_email@ejemplo.com]">josef.pachas@upsjb.edu.pe</a></li>
-                </address>
+                <ul class="contact-info"> <li><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong> Calle Falsa 123, Ciudad Ejemplo, País</li>
+                    <li><i class="fas fa-phone"></i> <strong>Teléfono:</strong> +51 987 654 321</li>
+                    <li><i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:contacto@tuabarrote.com">contacto@tuabarrote.com</a></li>
+                </ul>
             </section>
 
         </div>
     </div>
-
-
 </body>
 </html>

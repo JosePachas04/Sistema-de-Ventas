@@ -1,0 +1,156 @@
+body.auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #007bff, #ff6600);
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.auth-container {
+    display: flex;
+    width: 800px;
+    max-width: 95%;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.auth-form-section {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.auth-form-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.form-group-icon {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Incluir input type="email" here */
+.form-group-icon input[type="text"],
+.form-group-icon input[type="email"],
+.form-group-icon input[type="password"] {
+    width: 100%;
+    padding: 12px 15px 12px 40px; /* Ajustar padding para el icono */
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    box-sizing: border-box;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group-icon input[type="text"]:focus,
+.form-group-icon input[type="email"]:focus,
+.form-group-icon input[type="password"]:focus {
+    border-color: #007bff;
+}
+
+/* Placeholder para iconos (requiere HTML adicional en la plantilla o una librería de iconos) */
+/* .form-group-icon span.icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888; } */
+
+
+.auth-form-section button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+}
+
+.auth-form-section button:hover {
+    background-color: #e65c00;
+}
+
+.auth-form-section p {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+.auth-form-section p a {
+     color: #007bff;
+}
+
+
+.auth-form-section .message,
+.auth-form-section .error-message {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.auth-form-section .message {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+}
+
+.auth-form-section .error-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+
+
+.auth-message-section {
+    flex: 1;
+    background: linear-gradient(to bottom right, #007bff, #0056b3);
+    color: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.auth-message-section h2 {
+     color: white;
+     margin-bottom: 20px;
+}
+
+.auth-message-section p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+.auth-message-section a {
+     color: white;
+     text-decoration: underline;
+}
+
+@media (max-width: 992px) {
+     .auth-container {
+        flex-direction: column;
+        width: 95%;
+    }
+    .auth-form-section,
+    .auth-message-section {
+        padding: 20px;
+    }
+    .auth-message-section {
+         border-top: 1px solid rgba(255,255,255,0.3);
+    }
+}

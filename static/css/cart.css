@@ -1,0 +1,122 @@
+.cart-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.cart-items-table th,
+.cart-items-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+.cart-items-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+.cart-item-image img {
+    max-width: 80px;
+    height: auto;
+    border-radius: 4px;
+}
+.cart-item-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1em;
+    color: #333;
+}
+.cart-item-details p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #555;
+}
+ .cart-item-quantity input[type="number"] {
+     width: 60px;
+     padding: 5px;
+     border: 1px solid #ccc;
+     border-radius: 4px;
+     text-align: center;
+ }
+ .cart-item-actions form {
+     display: inline-block;
+     margin-left: 10px;
+ }
+ .cart-item-actions button {
+     background: none;
+     border: none;
+     color: #dc3545;
+     cursor: pointer;
+     padding: 0;
+     font-size: 1.1em;
+ }
+  .cart-item-actions button:hover {
+      color: #c82333;
+  }
+
+.cart-summary {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fff;
+    max-width: 300px;
+    margin-left: auto;
+}
+ .cart-summary h3 {
+     margin-top: 0;
+     border-bottom: 1px solid #eee;
+     padding-bottom: 10px;
+     margin-bottom: 10px;
+ }
+ .cart-summary p {
+     font-size: 1.2em;
+     font-weight: bold;
+     color: #333;
+ }
+ .cart-summary .total-price {
+     color: #ff6600;
+     font-size: 1.5em;
+ }
+ .cart-summary .checkout-button {
+     display: block;
+     width: 100%;
+     background-color: #28a745;
+     color: white;
+     padding: 10px;
+     border: none;
+     border-radius: 25px;
+     text-align: center;
+     font-size: 1.2em;
+     margin-top: 20px;
+     transition: background-color 0.3s ease;
+ }
+ .cart-summary .checkout-button:hover {
+     background-color: #218838;
+     text-decoration: none;
+ }
+
+ .empty-cart-message {
+     text-align: center;
+     margin-top: 50px;
+     font-size: 1.2em;
+     color: #555;
+ }
+
+@media (max-width: 600px) {
+     .cart-items-table th, .cart-items-table td {
+                 padding: 8px;
+                 font-size: 0.9em;
+             }
+             .cart-item-image img {
+                 max-width: 50px;
+             }
+             .cart-item-details h4 {
+                 font-size: 1em;
+             }
+              .cart-item-quantity input[type="number"] {
+                  width: 40px;
+              }
+              .cart-summary {
+                  max-width: 100%;
+                  margin-left: 0;
+              }
+}

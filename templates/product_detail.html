@@ -4,229 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.name if product else 'Producto no encontrado' }} - TuAbarrote</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product_detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .product-detail-container {
-            display: flex;
-            margin-top: 30px;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .product-image-section {
-            flex: 1;
-            min-width: 300px;
-            text-align: center;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 20px;
-            background-color: #fff;
-            box-sizing: border-box;
-        }
-
-        .product-image-section img {
-            max-width: 100%;
-            height: auto;
-            max-height: 400px;
-            object-fit: contain;
-        }
-
-        .product-info-section {
-            flex: 2;
-            min-width: 300px;
-            background-color: #fff;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .product-info-section h1 {
-            font-size: 2em;
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .product-info-section .category-name {
+        .unit-of-measure {
             font-size: 0.9em;
-            color: #555;
-            margin-bottom: 15px;
+            color: #777;
+            margin-left: 5px;
         }
-
-        .product-info-section .price-section {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .product-info-section .price-section .online-price {
-            font-size: 1.8em;
-            color: #ff6600;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-
-        .product-info-section .price-section .regular-price {
-            font-size: 1em;
-            color: #888;
-            text-decoration: line-through;
-        }
-
-        .product-info-section .discount-badge {
-             background-color: #ff6600;
-             color: white;
-             font-size: 0.9em;
-             padding: 4px 8px;
-             border-radius: 4px;
-             font-weight: bold;
-             margin-left: 10px;
-        }
-
-
-        .product-info-section h3 {
-            font-size: 1.3em;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .product-info-section .description,
-        .product-info-section .characteristics ul {
-            font-size: 1em;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .product-info-section .characteristics ul {
-            list-style: disc;
-            margin-left: 20px;
-        }
-
-        .product-info-section .quantity-selector {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .product-info-section .quantity-selector label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        .product-info-section .quantity-selector input[type="number"] {
-            width: 60px;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-align: center;
-            margin-right: 10px;
-        }
-
-        .product-info-section .add-to-cart-form {
-            display: flex;
-            align-items: center;
-        }
-
-        .product-info-section .add-to-cart-form button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-right: 10px;
-        }
-        .product-info-section .add-to-cart-form button:hover {
-             background-color: #388e3c;
-        }
-
-        .product-info-section .add-to-cart-form .btn-secondary {
-             background-color: #007bff;
-             color: white;
-             padding: 10px 15px;
-             border: none;
-             border-radius: 25px;
-             font-size: 1.1em;
-             cursor: pointer;
-             transition: background-color 0.3s ease;
-        }
-        .product-info-section .add-to-cart-form .btn-secondary:hover {
-             background-color: #0056b3;
-        }
-
-
-        @media (max-width: 768px) {
-            .product-detail-container {
-                flex-direction: column;
-                gap: 20px;
-            }
-            .product-image-section,
-            .product-info-section {
-                min-width: 100%;
-            }
-             .product-image-section img {
-                 max-height: 300px;
-             }
-             .product-info-section h1 {
-                font-size: 1.8em;
-             }
-             .product-info-section .price-section .online-price {
-                font-size: 1.5em;
-             }
-             .product-info-section .add-to-cart-form {
-                 flex-direction: column;
-                 align-items: stretch;
-             }
-              .product-info-section .add-to-cart-form button,
-              .product-info-section .add-to-cart-form .btn-secondary {
-                  width: 100%;
-                  margin-right: 0;
-                  margin-bottom: 10px;
-              }
-        }
-
-
     </style>
 </head>
 <body>
-
-    <div class="top-bar">
-        <div class="container top-bar-content">
-            <div class="top-bar-left">
-                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
-                <a href="#">Mi Cuenta</a>
-            </div>
-            <div class="top-bar-right">
-                 <span>Idioma: ES ⌄</span>
-                 <span>Moneda: USD ⌄</span>
-                 <a href="#">Seguimiento de Pedido</a>
-                 {% if is_logged_in %}
-                     <span>Hola, {{ session.username }}</span> |
-                    {% if user_role == 'admin' %}
-                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
-                     {% endif %}
-                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
-                {% else %}
-                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
-                    <a href="{{ url_for('register') }}">Registrarse</a>
-                {% endif %}
-                 {% if is_logged_in and user_role != 'admin' %}
-                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
 
     <header>
         <div class="container header-content">
             <div class="logo">TuAbarrote</div>
             <div class="search-bar">
-                <input type="text" placeholder="Buscar productos, categorías o marcas...">
-                <button><i class="fas fa-search"></i></button>
+                <form action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="user-auth-links" style="margin-left: 20px;">
+                {% if is_logged_in %}
+                    <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                        <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                    {% if user_role != 'admin' %}
+                        <a href="{{ url_for('view_cart') }}" class="cart-icon-top" style="margin-left: 10px;">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -234,13 +51,10 @@
     <nav class="main-nav">
         <div class="container">
             <ul>
-                <li><a href="{{ url_for('index') }}">Inicio</a></li>
                 <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
                  {% if user_role == 'admin' %}
                  <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
                  {% endif %}
-                  <li><a href="#">Categorías Populares</a></li>
-                  <li><a href="#">Ofertas del Día</a></li>
                  <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
             </ul>
         </div>
@@ -283,6 +97,9 @@
 
                     <div class="price-section">
                         <span class="online-price">S/.{{ "%.2f" | format(product.price) }}</span>
+                        {% if product.unidad_medida %}
+                            <span class="unit-of-measure">/ {{ product.unidad_medida }}</span>
+                        {% endif %}
                     </div>
 
                     {% if product.description %}
@@ -290,32 +107,19 @@
                         <p class="description">{{ product.description }}</p>
                     {% endif %}
 
-                     <h3>Características Principales</h3>
-                     <ul>
-                         <li>Contiene X unidades/kg</li>
-                         <li>Tipo de producto (ej: Arroz extra)</li>
-                     </ul>
-
-
                     <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="add-to-cart-form">
                         <div class="quantity-selector">
                             <label for="quantity">Cantidad:</label>
                             <input type="number" id="quantity" name="quantity" value="1" min="1" {% if product.stock is not none %}max="{{ product.stock }}"{% endif %} required>
                         </div>
-
                         <button type="submit">AGREGAR</button>
-
                     </form>
 
                     {% if user_role != 'admin' and product.stock is not none %}
                          <p style="font-size: 0.9em; color: #555; margin-top: 10px;">Stock disponible: {{ product.stock }}</p>
                     {% endif %}
-
-
                 </div>
-
             </div>
-
         {% else %}
             <p style="text-align: center; margin-top: 50px;">Producto no disponible.</p>
         {% endif %}
@@ -323,10 +127,6 @@
         <div style="text-align: center; margin-top: 30px;">
             <p><a href="{{ url_for('products_for_customer') }}">← Volver a la Tienda</a></p>
         </div>
-
-
     </div>
-
-
 </body>
 </html>

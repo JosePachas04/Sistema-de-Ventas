@@ -6,6 +6,63 @@
     <title>Registrarse - TuAbarrote</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .auth-form-container {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fff;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .auth-form-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        .form-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .form-actions button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-actions button:hover {
+            background-color: #218838;
+        }
+        .form-actions a {
+            margin-left: 20px;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body class="auth-page">
 
@@ -30,6 +87,9 @@
             <form method="POST" action="{{ url_for('register') }}">
                 <div class="form-group-icon">
                     <input type="text" id="username" name="username" placeholder="Nombre de Usuario" value="{{ username if username is defined }}" required>
+                </div>
+                <div class="form-group-icon">
+                    <input type="email" id="email" name="email" placeholder="Correo Electrónico" value="{{ email if email is defined }}" required>
                 </div>
                 <div class="form-group-icon">
                     <input type="password" id="password" name="password" placeholder="Contraseña" required>

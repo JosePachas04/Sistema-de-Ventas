@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - TuAbarrote</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .admin-dashboard-container {
@@ -29,6 +32,7 @@
             background-color: #007bff;
             color: white;
             border-radius: 5px;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
         .admin-links a:hover {
@@ -39,39 +43,26 @@
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="container top-bar-content">
-            <div class="top-bar-left">
-                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
-                <a href="#">Mi Cuenta</a>
+    <header>
+        <div class="container header-content">
+            <div class="logo">TuAbarrote</div>
+            <div class="search-bar">
+                <form action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
             </div>
-            <div class="top-bar-right">
-                 <span>Idioma: ES ⌄</span>
-                 <span>Moneda: USD ⌄</span>
-                 <a href="#">Seguimiento de Pedido</a>
-                 {% if is_logged_in %}
-                     <span>Hola, {{ session.username }}</span> |
+            <div class="user-auth-links" style="margin-left: 20px;">
+                {% if is_logged_in %}
+                    <span>Hola, {{ session.username }}</span> |
                     {% if user_role == 'admin' %}
-                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
-                     {% endif %}
+                        <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                    {% endif %}
                     <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
                 {% else %}
                     <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
                     <a href="{{ url_for('register') }}">Registrarse</a>
                 {% endif %}
-                 {% if is_logged_in and user_role != 'admin' %}
-                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <header>
-        <div class="container header-content">
-            <div class="logo">TuAbarrote</div>
-            <div class="search-bar">
-                <input type="text" placeholder="Buscar productos, categorías o marcas...">
-                <button><i class="fas fa-search"></i></button>
             </div>
         </div>
     </header>

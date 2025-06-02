@@ -4,129 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finalizar Compra - TuAbarrote</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .checkout-container {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            background-color: #fff;
+        .checkout-item-unit-measure {
+            font-size: 0.8em;
+            color: #777;
+            display: block;
+            margin-top: 3px;
         }
-        .checkout-container h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .order-summary-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .order-summary-table th,
-        .order-summary-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-            vertical-align: middle;
-        }
-        .order-summary-table th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        .order-summary-table .item-image img {
-            max-width: 60px;
-            height: auto;
-            border-radius: 4px;
-        }
-         .order-summary-table .item-details h4 {
-             margin: 0 0 5px 0;
-             font-size: 1em;
-             color: #333;
-         }
-         .order-summary-table .item-details p {
-             margin: 0;
-             font-size: 0.9em;
-             color: #555;
-         }
-
-        .checkout-total {
-            text-align: right;
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #ff6600;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-
-        .checkout-button-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-        .checkout-button-container button {
-            background-color: #28a745;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.3em;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .checkout-button-container button:hover {
-            background-color: #218838;
-        }
-
-        .shipping-payment-section {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px dashed #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            text-align: center;
-            color: #555;
-        }
-
-
     </style>
 </head>
 <body>
-
-    <div class="top-bar">
-        <div class="container top-bar-content">
-            <div class="top-bar-left">
-                <a href="{{ url_for('nosotros') }}">Sobre Nosotros</a>
-                <a href="#">Mi Cuenta</a>
-            </div>
-            <div class="top-bar-right">
-                 <span>Idioma: ES ⌄</span>
-                 <span>Moneda: USD ⌄</span>
-                 <a href="#">Seguimiento de Pedido</a>
-                 {% if is_logged_in %}
-                     <span>Hola, {{ session.username }}</span> |
-                    {% if user_role == 'admin' %}
-                         <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
-                     {% endif %}
-                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
-                {% else %}
-                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
-                    <a href="{{ url_for('register') }}">Registrarse</a>
-                {% endif %}
-                 {% if is_logged_in and user_role != 'admin' %}
-                    <a href="{{ url_for('view_cart') }}" class="cart-icon-top">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
-                 {% endif %}
-            </div>
-        </div>
-    </div>
 
     <header>
         <div class="container header-content">
             <div class="logo">TuAbarrote</div>
             <div class="search-bar">
-                <input type="text" placeholder="Buscar productos, categorías o marcas...">
-                <button><i class="fas fa-search"></i></button>
+                <form action="{{ url_for('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="user-auth-links" style="margin-left: 20px;">
+                {% if is_logged_in %}
+                    <span>Hola, {{ session.username }}</span> |
+                    {% if user_role == 'admin' %}
+                        <a href="{{ url_for('admin_dashboard') }}">Dashboard Admin</a> |
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+                    {% if user_role != 'admin' %}
+                        <a href="{{ url_for('view_cart') }}" class="cart-icon-top" style="margin-left: 10px;">🛒 <span class="cart-count">({{ session['cart'] | length if session['cart'] is defined else 0 }})</span></a>
+                    {% endif %}
+                {% else %}
+                    <a href="{{ url_for('login') }}">Iniciar Sesión</a> |
+                    <a href="{{ url_for('register') }}">Registrarse</a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -134,13 +52,10 @@
     <nav class="main-nav">
         <div class="container">
             <ul>
-                <li><a href="{{ url_for('index') }}">Inicio</a></li>
                 <li><a href="{{ url_for('products_for_customer') }}">Tienda</a></li>
                  {% if user_role == 'admin' %}
                  <li><a href="{{ url_for('products') }}">Gestión Productos (Admin)</a></li>
                  {% endif %}
-                  <li><a href="#">Categorías Populares</a></li>
-                  <li><a href="#">Ofertas del Día</a></li>
                  <li><a href="{{ url_for('nosotros') }}">Nosotros</a></li>
             </ul>
         </div>
@@ -163,6 +78,7 @@
 
 
             {% if cart_items %}
+                <h3>Resumen de tu Pedido</h3>
                 <table class="order-summary-table">
                     <thead>
                         <tr>
@@ -178,16 +94,19 @@
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     {% if item.product.image_filename %}
-                                        <div class="item-image" style="margin-right: 15px;">
-                                            <img src="{{ url_for('static', filename='uploads/products/' + item.product.image_filename) }}" alt="{{ item.product.name }}">
+                                        <div class="item-image" style="margin-right: 15px; max-width: 60px;">
+                                            <img src="{{ url_for('static', filename='uploads/products/' + item.product.image_filename) }}" alt="{{ item.product.name }}" style="max-width: 100%; height: auto; border-radius: 4px;">
                                         </div>
                                     {% else %}
-                                         <div class="item-image" style="margin-right: 15px;">
-                                            <img src="{{ url_for('static', filename='images/no_image_placeholder.png') }}" alt="Sin imagen disponible">
+                                         <div class="item-image" style="margin-right: 15px; max-width: 60px;">
+                                            <img src="{{ url_for('static', filename='images/no_image_placeholder.png') }}" alt="Sin imagen disponible" style="max-width: 100%; height: auto; border-radius: 4px;">
                                         </div>
                                     {% endif %}
                                     <div class="item-details">
                                         <h4>{{ item.product.name }}</h4>
+                                        {% if item.product.unidad_medida %}
+                                            <span class="checkout-item-unit-measure">Unidad: {{ item.product.unidad_medida }}</span>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </td>
@@ -204,29 +123,25 @@
                 </div>
 
                 <div class="shipping-payment-section">
-                    <p>Aquí irían las opciones de envío, dirección y método de pago.</p>
-                    <p>(Funcionalidad de pago no implementada en este paso)</p>
+                    <h4>Información de Envío y Pago</h4>
+                    <p><em>(Esta sección es un placeholder.)</em></p>
+                    <p>Por ahora, al confirmar, el pedido se procesará directamente.</p>
                 </div>
 
 
                 <div class="checkout-button-container">
                     <form action="{{ url_for('checkout') }}" method="POST">
-                        <button type="submit">Confirmar y Pagar</button>
+                        <button type="submit">Confirmar y Procesar Pedido</button>
                     </form>
                 </div>
-
 
             {% else %}
                 <p style="text-align: center; margin-top: 50px;">No hay productos en tu carrito para finalizar la compra.</p>
                  <div style="text-align: center; margin-top: 20px;">
-                      <a href="{{ url_for('products_for_customer') }}" class="btn-primary">Volver a la Tienda</a>
+                      <a href="{{ url_for('products_for_customer') }}" class="btn-primary" style="padding: 10px 20px; background-color: #007bff; color: white; border-radius: 5px; text-decoration: none;">Volver a la Tienda</a>
                  </div>
             {% endif %}
-
-
         </div>
     </div>
-
-
 </body>
 </html>
