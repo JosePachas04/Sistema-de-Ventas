@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Tu Carrito de Compras{% endblock %}
+
+{% block content %}
+<h2 class="section-title mb-4">Tu Carrito de Compras</h2>
+
+{% if cart_items %}
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col" colspan="2">Producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col" class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td style="width: 100px;">
+                    <img src="{{ url_for('static', filename='uploads/products/' + (item.product.image_filename if item.product.image_filename else 'default.png')) }}" class="img-fluid rounded" alt="{{ item.product.name }}">
+                </td>
+                <td>{{ item.product.name }}</td>
+                <td>S/.{{ "%.2f"|format(item.product.price) }}</td>
+                <td style="width: 150px;">
+                    <form action="{{ url_for('cart.update_cart', product_id=item.product.id) }}" method="POST" class="d-flex">
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control form-control-sm" style="width: 60px;">
+                        <button type="submit" class="btn btn-sm btn-outline-secondary ml-1"><i class="fas fa-sync-alt"></i></button>
+                    </form>
+                </td>
+                <td class="text-right">S/.{{ "%.2f"|format(item.item_total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-right"><strong>Total General:</strong></td>
+                <td class="text-right"><strong>S/.{{ "%.2f"|format(total_price) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<div class="row justify-content-end mt-3">
+    <div class="col-md-4 text-right">
+        <a href="{{ url_for('products.products_for_customer') }}" class="btn btn-secondary">Seguir Comprando</a>
+        <a href="{{ url_for('cart.checkout') }}" class="btn btn-success" style="background-color: #F57C00; border-color: #F57C00;">Proceder al Pago</a>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">Tu carrito está vacío. ¡<a href="{{ url_for('products.products_for_customer') }}">Empieza a comprar</a>!</div>
+{% endif %}
+{% endblock %}

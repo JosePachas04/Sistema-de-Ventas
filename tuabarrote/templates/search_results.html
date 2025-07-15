@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from '_pagination.html' import render_pagination %}
+
+{% block title %}Resultados de búsqueda para '{{ query }}'{% endblock %}
+
+{% block content %}
+<h2 class="section-title mb-4">
+    Resultados de búsqueda para: "{{ query }}"
+</h2>
+
+<div class="row">
+    {% if products_results %}
+        {% for product in products_results %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card product-card h-100">
+                <i class="far fa-heart fav-icon"></i>
+                <a href="{{ url_for('products.product_detail', product_id=product.id) }}">
+                    <img src="{{ url_for('static', filename='uploads/products/' + (product.image_filename if product.image_filename else 'default.png')) }}" class="card-img-top" alt="{{ product.name }}">
+                </a>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <div class="mt-auto">
+                        <p class="card-price mb-0">S/.{{ "%.2f"|format(product.price) }} <span class="card-unit">/ {{ product.unidad_medida or 'Unidad' }}</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col">
+            <div class="alert alert-info">No se encontraron productos que coincidan con tu búsqueda.</div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

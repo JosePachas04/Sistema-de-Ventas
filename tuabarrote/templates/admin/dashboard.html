@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de Administración{% endblock %}
+
+{% block content %}
+<h2 class="section-title mb-4">Panel de Administración</h2>
+<p>Bienvenido, {{ session.username }}. Desde aquí puedes gestionar la tienda.</p>
+
+<div class="list-group">
+  <a href="{{ url_for('admin.manage_products') }}" class="list-group-item list-group-item-action">Gestionar Productos</a>
+  <a href="#" class="list-group-item list-group-item-action disabled">Gestionar Categorías (Próximamente)</a>
+  <a href="#" class="list-group-item list-group-item-action disabled">Ver Órdenes (Próximamente)</a>
+</div>
+{% endblock %}

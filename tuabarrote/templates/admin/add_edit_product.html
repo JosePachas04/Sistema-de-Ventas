@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<h2 class="section-title mb-4">{{ title }}</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name">Nombre del Producto</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ product.name if product else '' }}" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Descripción</label>
+        <textarea class="form-control" id="description" name="description" rows="3">{{ product.description if product else '' }}</textarea>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="price">Precio (S/.)</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="price" value="{{ product.price if product else '' }}" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="stock">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock" value="{{ product.stock if product else '' }}" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="unidad_medida">Unidad de Medida (ej: Kg, Lt, 900ml)</label>
+            <input type="text" class="form-control" id="unidad_medida" name="unidad_medida" value="{{ product.unidad_medida if product else '' }}">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="category_id">Categoría</label>
+            <select class="form-control" id="category_id" name="category_id" required>
+                <option value="">Selecciona una categoría</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if product and product.category_id == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="image">Imagen del Producto</label>
+        <input type="file" class="form-control-file" id="image" name="image">
+        {% if product and product.image_filename %}
+            <small class="form-text text-muted">Imagen actual: {{ product.image_filename }}</small>
+        {% endif %}
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="is_active" name="is_active" {% if product.is_active or not product %}checked{% endif %}>
+        <label class="form-check-label" for="is_active">Producto Activo</label>
+    </div>
+    <button type="submit" class="btn btn-primary" style="background-color: #F57C00; border-color: #F57C00;">Guardar Cambios</button>
+    <a href="{{ url_for('admin.manage_products') }}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

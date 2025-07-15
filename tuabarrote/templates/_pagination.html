@@ -1,0 +1,25 @@
+{% macro render_pagination(current_page, total_pages, endpoint, category_id=None) %}
+{% if total_pages > 1 %}
+<nav aria-label="Navegación de productos">
+  <ul class="pagination">
+    <li class="page-item {% if current_page <= 1 %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for(endpoint, page=current_page - 1, category_id=category_id) if current_page > 1 else '#' }}">Anterior</a>
+    </li>
+    {% for page_num in range(1, total_pages + 1) %}
+      {% if page_num == current_page %}
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">{{ page_num }}</span>
+        </li>
+      {% else %}
+        <li class="page-item">
+          <a class="page-link" href="{{ url_for(endpoint, page=page_num, category_id=category_id) }}">{{ page_num }}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    <li class="page-item {% if current_page >= total_pages %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for(endpoint, page=current_page + 1, category_id=category_id) if current_page < total_pages else '#' }}">Siguiente</a>
+    </li>
+  </ul>
+</nav>
+{% endif %}
+{% endmacro %}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Boleta de Venta - Pedido #{{ order['id'] }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 12px;
+            color: #333;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #f57c00;
+            padding-bottom: 10px;
+        }
+        .header .store-details h1 {
+            color: #f57c00;
+            margin: 0;
+            font-size: 28px;
+        }
+        .header .store-details p {
+            margin: 2px 0;
+            font-size: 11px;
+        }
+        .header .receipt-details {
+            text-align: right;
+        }
+        .header .receipt-details h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .customer-details {
+            margin-top: 20px;
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .totals {
+            margin-top: 20px;
+            width: 40%;
+            margin-left: 60%;
+        }
+        .totals table td {
+            border: none;
+            padding: 5px 10px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 11px;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="store-details">
+            <h1>TuAbarrote</h1>
+            <p>{{ store_address }}</p>
+            <p>Teléfono: {{ store_phone }}</p>
+        </div>
+        <div class="receipt-details">
+            <h2>BOLETA DE VENTA</h2>
+            <p><strong>Pedido N°:</strong> {{ order['id'] }}</p>
+            {% if order['created_at'] %}
+                <p><strong>Fecha:</strong> {{ order['created_at'].strftime('%d/%m/%Y') }}</p>
+            {% endif %}
+        </div>
+    </header>
+
+    <section class="customer-details">
+        <strong>Cliente:</strong> {{ customer['username'] }}<br>
+        <strong>Email:</strong> {{ customer['email'] }}
+    </section>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th class="text-right">Precio Unit.</th>
+                <th class="text-right">Cantidad</th>
+                <th class="text-right">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ item['product']['name'] }}</td>
+                <td class="text-right">S/. {{ "%.2f"|format(item['price_at_purchase']) }}</td>
+                <td class="text-right">{{ item['quantity'] }}</td>
+                <td class="text-right">S/. {{ "%.2f"|format(item['price_at_purchase'] * item['quantity']) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <section class="totals">
+        <table>
+            <tr>
+                <td>Subtotal:</td>
+                <td class="text-right">S/. {{ "%.2f"|format(order['total_amount']|float / 1.18) }}</td>
+            </tr>
+            <tr>
+                <td>IGV (18%):</td>
+                <td class="text-right">S/. {{ "%.2f"|format(order['total_amount']|float - (order['total_amount']|float / 1.18)) }}</td>
+            </tr>
+            <tr>
+                <td><strong>Total:</strong></td>
+                <td class="text-right"><strong>S/. {{ "%.2f"|format(order['total_amount']) }}</strong></td>
+            </tr>
+        </table>
+    </section>
+
+    <footer class="footer">
+        <p>¡Gracias por tu compra!</p>
+        <p>Este es un comprobante generado por computadora.</p>
+    </footer>
+
+</body>
+</html>
