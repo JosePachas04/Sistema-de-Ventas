@@ -10,7 +10,7 @@ body {
     font-weight: 700;
     color: #333;
     padding-bottom: 10px;
-    border-bottom: 3px solid #f57c00; /* Naranja principal */
+    border-bottom: 3px solid #00aae4; /* Naranja principal */
     display: inline-block;
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 .navbar-brand {
-    color: #f57c00 !important; /* Naranja principal */
+    color: #00aae4 !important; /* Naranja principal */
     font-weight: 700;
     font-size: 1.8rem;
 }
@@ -39,7 +39,7 @@ body {
 }
 
 .main-navbar .nav-link:hover {
-    color: #f57c00 !important;
+    color: #00aae4 !important;
 }
 
 .user-nav a {
@@ -48,12 +48,12 @@ body {
 }
 
 .user-nav a:hover {
-    color: #f57c00;
+    color: #00aae4;
 }
 
 /* Barra de Búsqueda */
 .form-control:focus {
-    border-color: #f57c00;
+    border-color: #00aae4;
     box-shadow: 0 0 0 .2rem rgba(245, 124, 0, .25);
 }
 
@@ -81,7 +81,7 @@ body {
 .category-sidebar .list-group-item.active,
 .category-sidebar .list-group-item:hover {
     background-color: transparent;
-    color: #f57c00;
+    color: #00aae4;
     font-weight: 700;
 }
 
@@ -120,7 +120,7 @@ body {
 .product-card .card-price {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #f57c00;
+    color: #00aae4;
 }
 
 .product-card .card-unit {
@@ -138,23 +138,23 @@ body {
 }
 
 .product-card .fav-icon:hover {
-    color: #f57c00;
+    color: #00aae4;
 }
 
 /* =================================
    PAGINACIÓN
    ================================= */
 .pagination .page-item.active .page-link {
-    background-color: #f57c00;
-    border-color: #f57c00;
+    background-color: #00aae4;
+    border-color: #00aae4;
 }
 
 .pagination .page-link {
-    color: #f57c00;
+    color: #00aae4;
 }
 
 .pagination .page-link:hover {
-    color: #e06f00;
+    color: #00aae4;
 }
 
 /* =================================
@@ -166,7 +166,7 @@ body {
     right: 25px;
     width: 60px;
     height: 60px;
-    background-color: #f57c00; /* Naranja principal */
+    background-color: #00aae4; /* Naranja principal */
     color: white;
     border-radius: 50%;
     border: none;
@@ -217,7 +217,7 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #f57c00;
+    background-color: #00aae4;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -277,7 +277,7 @@ body {
     width: 35px;
     height: 35px;
     border-radius: 50%;
-    background-color: #f57c00;
+    background-color: #00aae4;
     flex-shrink: 0;
 }
 
@@ -319,7 +319,7 @@ body {
 }
 
 #chatbot-form button {
-    background-color: #f57c00;
+    background-color: #00aae4;
     border: none;
     color: #fff;
     width: 35px;
@@ -330,7 +330,7 @@ body {
 }
 
 #chatbot-form button:hover {
-    background-color: #e65100;
+    background-color: #00aae4;
 }
 
 .suggestion-chips-container {
@@ -342,8 +342,8 @@ body {
 
 .suggestion-chip {
     background-color: #fff;
-    border: 1px solid #F57C00;
-    color: #F57C00;
+    border: 1px solid #00aae4;
+    color: #00aae4;
     padding: 8px 15px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -353,7 +353,7 @@ body {
 }
 
 .suggestion-chip:hover {
-    background-color: #F57C00;
+    background-color: #00aae4;
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);

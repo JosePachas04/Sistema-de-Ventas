@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}TuAbarrote{% endblock %}</title>
+    <title>{% block title %}TevaFarma{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
@@ -13,7 +13,7 @@
         <div class="container">
             <div class="row align-items-center py-3">
                 <div class="col-lg-3 col-md-4">
-                    <a class="navbar-brand" href="{{ url_for('main.index') }}">TuAbarrote</a>
+                    <a class="navbar-brand" href="{{ url_for('main.index') }}">TevaFarma</a>
                 </div>
                 <div class="col-lg-6 col-md-8">
                     <form class="form-inline w-100" action="{{ url_for('products.search') }}" method="GET">
@@ -79,7 +79,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer mt-auto py-3 bg-light border-top"><div class="container text-center"><span class="text-muted">&copy; 2025 TuAbarrote.</span></div></footer>
+    <footer class="footer mt-auto py-3 bg-light border-top"><div class="container text-center"><span class="text-muted">&copy; 2025 TevaFarma.</span></div></footer>
     
     {% if is_customer() %}
         <script src="https://cdn.botpress.cloud/webchat/v3.2/inject.js" defer></script>

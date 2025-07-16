@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Producto - TuAbarrote Admin</title>
+    <title>Editar Producto - TevaFarma Admin</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/general.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navigation.css') }}">
@@ -90,7 +90,7 @@
 
     <header>
         <div class="container header-content">
-            <div class="logo">TuAbarrote</div>
+            <div class="logo">TevaFarma</div>
             <div class="search-bar">
                 <form action="{{ url_for('search') }}" method="GET">
                     <input type="text" name="query" placeholder="Buscar productos, categorías o marcas..." value="{{ query if query is not none else '' }}">
